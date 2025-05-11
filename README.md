@@ -5,13 +5,10 @@
 [![Code Style: flake8](https://img.shields.io/badge/code%20style-flake8-brightgreen.svg)](https://flake8.pycqa.org/en/latest/)
 [![Docs](https://img.shields.io/badge/docs-Sphinx-informational)](docs/_build/index.html)
 
----
+<p align="center">
+   <img src="assets/sky.gif" alt="Flight Planner Sky" width="560" />
+</p>
 
-A professional Python project for planning flight routes with real-time weather considerations, featuring dark mode support, enhanced UI, and improved aircraft simulation.
-
-![Flight Planner Sky](assets/sky.gif)
-
----
 
 ## ✈️ Features
 - Plan flight routes between Spanish cities with real-time or simulated weather data
@@ -38,7 +35,7 @@ A professional Python project for planning flight routes with real-time weather 
 - `matplotlib>=3.5.0`
 
 ## 🔑 API Key Usage
-MissionPlanner requires an OpenWeatherMap API key for real-time weather data. If you do not provide an API key, the application will automatically use simulated weather data, allowing you to run and test all features without a real API key.
+MissionPlanner requires an [OpenWeatherMap](openweathermap.org) API key for real-time weather data. If you do not provide an API key, the application will automatically use simulated weather data, allowing you to run and test all features without a real API key.
 
 ## 🚀 Setup
 1. **Clone the repository:**
