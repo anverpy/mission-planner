@@ -1,33 +1,31 @@
 """
-Módulo de pruebas unitarias para la clase FlightPlan.
+Unit test module for the FlightPlan class.
 
-Este módulo contiene pruebas unitarias para verificar el funcionamiento
-correcto de la clase FlightPlan y sus métodos asociados. Las pruebas
-cubren la inicialización, validación de coordenadas, obtención de datos
-meteorológicos, cálculo de rutas y estimación de tiempos de vuelo.
+This module contains unit tests to verify the correct operation
+of the FlightPlan class and its associated methods. The tests
+cover initialization, coordinate validation, weather data retrieval,
+route calculation, and flight time estimation.
 """
 
-import set_pythonpath
 import unittest
 from unittest.mock import patch, MagicMock
-from flight_plan import FlightPlan, Coordinate
+from flight_plan import FlightPlan
 from weather import Weather
-
 
 class TestFlightPlan(unittest.TestCase):
     """
-    Conjunto de pruebas para la clase FlightPlan.
+    Test suite for the FlightPlan class.
 
-    Esta clase contiene métodos de prueba para verificar el comportamiento
-    correcto de los diferentes componentes de la clase FlightPlan.
+    This class contains test methods to verify the correct behavior
+    of the different components of the FlightPlan class.
     """
 
-    def setUp(self):
+    def setUp(self) -> None:
         """
-        Configura el entorno de prueba antes de cada método de prueba.
+        Set up the test environment before each test method.
 
-        Inicializa las coordenadas de partida, llegada y punto intermedio
-        que se utilizarán en las pruebas.
+        Initializes the departure, arrival, and waypoint coordinates
+        to be used in the tests.
         """
         self.departure = (40.4168, -3.7038)  # Madrid
         self.arrival = (41.6528, -4.7245)  # Valladolid
@@ -35,10 +33,10 @@ class TestFlightPlan(unittest.TestCase):
 
     def test_init(self):
         """
-        Prueba la inicialización correcta de un objeto FlightPlan.
+        Test correct initialization of a FlightPlan object.
 
-        Verifica que los atributos de partida, llegada y puntos intermedios
-        se establezcan correctamente durante la inicialización.
+        Verifies that the departure, arrival, and waypoint attributes
+        are set correctly during initialization.
         """
         fp = FlightPlan(self.departure, self.arrival, [self.waypoint])
         self.assertEqual(fp.departure, self.departure)
@@ -47,10 +45,10 @@ class TestFlightPlan(unittest.TestCase):
 
     def test_validate_coordinates(self):
         """
-        Prueba la validación de coordenadas.
+        Test coordinate validation.
 
-        Verifica que el método _validate_coordinates acepte coordenadas válidas
-        y rechace las inválidas, lanzando una excepción ValueError.
+        Verifies that the _validate_coordinates method accepts valid coordinates
+        and rejects invalid ones, raising a ValueError.
         """
         fp = FlightPlan(self.departure, self.arrival)
         valid_coord = (40.4168, -3.7038)
@@ -63,10 +61,10 @@ class TestFlightPlan(unittest.TestCase):
     @patch("flight_plan.WeatherAPI")
     def test_get_weather_at_point(self, mock_weather_api):
         """
-        Prueba la obtención de datos meteorológicos para un punto.
+        Test weather data retrieval for a point.
 
-        Utiliza un mock de WeatherAPI para simular la obtención de datos
-        meteorológicos y verifica que se cree correctamente un objeto Weather.
+        Uses a mock WeatherAPI to simulate weather data retrieval
+        and verifies that a Weather object is correctly created.
         """
         mock_api_instance = MagicMock()
         mock_weather_api.return_value = mock_api_instance
@@ -79,7 +77,7 @@ class TestFlightPlan(unittest.TestCase):
             "description": "Cloudy",
         }
 
-        fp = FlightPlan(self.departure, self.arrival, api_key="test_key")
+        fp = FlightPlan(self.departure, self.arrival)
         weather = fp.get_weather_at_point(self.departure)
 
         self.assertIsInstance(weather, Weather)
@@ -88,24 +86,21 @@ class TestFlightPlan(unittest.TestCase):
 
     def test_calculate_route(self):
         """
-        Prueba el cálculo de la ruta de vuelo.
+        Test flight route calculation.
 
-        Verifica que el método calculate_route devuelva una distancia total
-        mayor que cero para una ruta válida.
+        Verifies that the calculate_route method returns a total distance
+        greater than zero for a valid route.
         """
         fp = FlightPlan(self.departure, self.arrival, [self.waypoint])
         total_distance = fp.calculate_route()
-
-        # You might want to calculate the expected distance separately
-        # and compare it with a small tolerance
         self.assertGreater(total_distance, 0)
 
     def test_estimate_time(self):
         """
-        Prueba la estimación del tiempo de vuelo.
+        Test flight time estimation.
 
-        Simula condiciones meteorológicas y verifica que el tiempo estimado
-        sea razonable para una distancia y velocidad dadas.
+        Simulates weather conditions and verifies that the estimated time
+        is reasonable for a given distance and speed.
         """
         fp = FlightPlan(self.departure, self.arrival)
         fp.total_distance = 100  # Set a known distance for testing
@@ -116,7 +111,6 @@ class TestFlightPlan(unittest.TestCase):
 
         self.assertGreater(estimated_time, 0)
         self.assertLess(estimated_time, 1)  # Should take less than an hour at 800 km/h
-
 
 if __name__ == "__main__":
     unittest.main()

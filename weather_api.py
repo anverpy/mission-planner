@@ -1,52 +1,52 @@
 import os
 import requests
+import os
 from dotenv import load_dotenv
-
 
 class WeatherAPI:
     """
-    Una clase para interactuar con la API de OpenWeatherMap.
+    A class to interact with the OpenWeatherMap API.
 
-    Esta clase proporciona métodos para obtener datos meteorológicos actuales
-    para coordenadas geográficas específicas.
+    This class provides methods to obtain current weather data
+    for specific geographic coordinates.
 
-    Atributos:
-        api_key (str): La clave API para acceder a OpenWeatherMap.
-        base_url (str): La URL base para las solicitudes a la API.
+    Attributes:
+        api_key (str): The API key for accessing OpenWeatherMap.
+        base_url (str): The base URL for API requests.
     """
 
     def __init__(self):
         """
-        Inicializa la WeatherAPI con la clave API proporcionada.
-
-        Args:
-            api_key (str): La clave API para acceder a OpenWeatherMap.
+        Initialize WeatherAPI with the provided API key.
         """
-        load_dotenv()  # Esto carga las variables del archivo .env
+        load_dotenv()  # Loads variables from .env file
         self.api_key = os.getenv("API_KEY")
-        if not self.api_key:
-            raise ValueError("API_KEY no está configurada en el archivo .env")
+        # No lanzar error, simplemente establecer api_key como None
+        # para que se puedan usar datos simulados
         self.base_url = "https://api.openweathermap.org/data/2.5/weather"
 
-    def get_weather(self, lat: float, lon: float):
+    def get_weather(self, lat: float, lon: float) -> dict:
         """
-        Obtiene datos meteorológicos actuales para la latitud y longitud dadas.
+        Get current weather data for the given latitude and longitude.
 
         Args:
-            lat (float): La latitud de la ubicación.
-            lon (float): La longitud de la ubicación.
+            lat (float): Latitude of the location.
+            lon (float): Longitude of the location.
 
         Returns:
-            dict: Un diccionario con los datos meteorológicos, incluyendo velocidad del viento,
-                  dirección del viento, temperatura, humedad, presión y descripción.
+            dict: A dictionary with weather data, including wind speed,
+                  wind direction, temperature, humidity, pressure, and description.
 
         Raises:
-            Exception: Si hay un error al obtener los datos meteorológicos.
+            Exception: If there is an error obtaining weather data.
         """
+        # Si no hay API key configurada, lanzar una excepción que será capturada
+        # por el FlightPlan para usar datos simulados
+        if not self.api_key:
+            raise Exception("No API key provided")
+            
         params = {"lat": lat, "lon": lon, "appid": self.api_key, "units": "metric"}
-
         response = requests.get(self.base_url, params=params)
-
         if response.status_code == 200:
             data = response.json()
             return {
@@ -60,12 +60,12 @@ class WeatherAPI:
         else:
             raise Exception(f"Error fetching weather data: {response.status_code}")
 
-    def check_api_status(self):
+    def check_api_status(self) -> bool:
         """
-        Verifica si la API está funcionando correctamente.
+        Check if the API is working correctly.
 
         Returns:
-            bool: True si la API está funcionando, False en caso contrario.
+            bool: True if the API is working, False otherwise.
         """
         try:
             self.get_weather(51.5074, -0.1278)  # London coordinates

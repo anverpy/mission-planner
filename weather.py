@@ -4,35 +4,40 @@ import random
 
 class Weather:
     """
-    Una clase para representar las condiciones meteorológicas.
+    A class to represent weather conditions.
 
-    Esta clase almacena información sobre las condiciones meteorológicas actuales
-    y proporciona métodos para calcular el impacto del clima en la velocidad de vuelo.
+    This class stores information about current weather conditions
+    and provides methods to calculate the impact of weather on flight speed.
 
-    Atributos:
-        wind_speed (float): Velocidad del viento en km/h.
-        wind_direction (float): Dirección del viento en grados.
-        temperature (float): Temperatura en grados Celsius.
-        humidity (float): Humedad relativa en porcentaje.
-        pressure (float): Presión atmosférica en hPa.
-        description (str): Descripción textual del clima.
+    Attributes:
+        wind_speed (float): Wind speed in km/h.
+        wind_direction (float): Wind direction in degrees.
+        temperature (float): Temperature in degrees Celsius.
+        humidity (float): Relative humidity in percent.
+        pressure (float): Atmospheric pressure in hPa.
+        description (str): Textual description of the weather.
     """
 
     def __init__(
-        self, wind_speed, wind_direction, temperature, humidity, pressure, description
+        self,
+        wind_speed: float,
+        wind_direction: float,
+        temperature: float,
+        humidity: float,
+        pressure: float,
+        description: str,
     ):
         """
-        Inicializa una instancia de Weather.
+        Initialize a Weather instance.
 
         Args:
-            wind_speed (float): Velocidad del viento en km/h.
-            wind_direction (float): Dirección del viento en grados.
-            temperature (float): Temperatura en grados Celsius.
-            humidity (float): Humedad relativa en porcentaje.
-            pressure (float): Presión atmosférica en hPa.
-            description (str): Descripción textual del clima.
+            wind_speed (float): Wind speed in km/h.
+            wind_direction (float): Wind direction in degrees.
+            temperature (float): Temperature in degrees Celsius.
+            humidity (float): Relative humidity in percent.
+            pressure (float): Atmospheric pressure in hPa.
+            description (str): Textual description of the weather.
         """
-
         self.wind_speed = wind_speed
         self.wind_direction = wind_direction
         self.temperature = temperature
@@ -40,7 +45,7 @@ class Weather:
         self.pressure = pressure
         self.description = description
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"Wind Speed: {self.wind_speed:.2f} km/h\n"
             f"Wind Direction: {self.wind_direction:.2f}°\n"
@@ -50,15 +55,15 @@ class Weather:
             f"Description: {self.description}"
         )
 
-    def impact_on_speed(self, flight_direction):
+    def impact_on_speed(self, flight_direction: float) -> float:
         """
-        Calcula el impacto del viento en la velocidad de vuelo.
+        Calculate the impact of wind on flight speed.
 
         Args:
-            flight_direction (float): La dirección del vuelo en grados.
+            flight_direction (float): The flight direction in degrees.
 
         Returns:
-            float: El impacto en la velocidad en km/h (positivo para viento a favor, negativo para viento en contra).
+            float: The impact on speed in km/h (positive for tailwind, negative for headwind).
         """
         wind_dir_rad = math.radians(self.wind_direction)
         flight_dir_rad = math.radians(flight_direction)
@@ -67,19 +72,18 @@ class Weather:
         return wind_component
 
     @classmethod
-    def from_api(cls, api, lat, lon):
+    def from_api(cls, api, lat: float, lon: float) -> "Weather":
         """
-        Crea una instancia de Weather a partir de datos de la API.
+        Create a Weather instance from API data.
 
         Args:
-            api (WeatherAPI): Instancia de la API del clima.
-            lat (float): Latitud del punto.
-            lon (float): Longitud del punto.
+            api (WeatherAPI): Instance of the weather API.
+            lat (float): Latitude of the point.
+            lon (float): Longitude of the point.
 
         Returns:
-            Weather: Una nueva instancia de Weather con datos de la API.
+            Weather: A new Weather instance with API data.
         """
-
         weather_data = api.get_weather(lat, lon)
         return cls(
             weather_data["wind_speed"],
@@ -91,12 +95,12 @@ class Weather:
         )
 
     @classmethod
-    def generate_random(cls):
+    def generate_random(cls) -> "Weather":
         """
-        Genera una instancia de Weather con datos aleatorios.
+        Generate a Weather instance with random data.
 
         Returns:
-            Weather: Una nueva instancia de Weather con datos aleatorios.
+            Weather: A new Weather instance with random data.
         """
         return cls(
             wind_speed=random.uniform(0, 100),

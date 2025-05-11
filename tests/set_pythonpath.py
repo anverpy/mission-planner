@@ -1,8 +1,8 @@
 import os
 import sys
 
-# Obtiene la ruta al directorio padre del directorio actual (tests)
+# Get the path to the parent directory of the current directory (tests)
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Añade el directorio padre al PYTHONPATH
+# Add the parent directory to PYTHONPATH
 sys.path.insert(0, parent_dir)

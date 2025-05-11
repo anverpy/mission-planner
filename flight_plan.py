@@ -9,97 +9,84 @@ from contextlib import contextmanager
 
 Coordinate = namedtuple("Coordinate", ["lat", "lon"])
 
-
 class FlightPlan:
     """
-    Una clase para representar un plan de vuelo con consideraciones meteorológicas.
+    A class to represent a flight plan with weather considerations.
 
-    Esta clase proporciona métodos para calcular rutas, distancias y tiempos de vuelo estimados
-    teniendo en cuenta las condiciones meteorológicas actuales.
+    This class provides methods to calculate routes, distances, and estimated flight times
+    taking into account current weather conditions.
 
-    Atributos:
-        departure (tuple): Coordenadas (lat, lon) del punto de partida.
-        arrival (tuple): Coordenadas (lat, lon) del punto de llegada.
-        waypoints (list): Lista de tuplas de coordenadas para puntos intermedios.
-        weather_conditions (dict): Condiciones meteorológicas almacenadas en caché para coordenadas.
-        total_distance (float): Distancia total de la ruta de vuelo en km.
-        adjusted_speed (float): Velocidad ajustada considerando las condiciones meteorológicas.
-        weather_api (WeatherAPI): Instancia de WeatherAPI para obtener datos meteorológicos.
+    Attributes:
+        departure (tuple): Coordinates (lat, lon) of the departure point.
+        arrival (tuple): Coordinates (lat, lon) of the arrival point.
+        waypoints (list): List of coordinate tuples for intermediate points.
+        weather_conditions (dict): Cached weather conditions for coordinates.
+        total_distance (float): Total route distance in km.
+        adjusted_speed (float): Speed adjusted for weather conditions.
+        weather_api (WeatherAPI): Instance of WeatherAPI to obtain weather data.
     """
 
-    def __init__(self, departure, arrival, waypoints=[]):
+    def __init__(self, departure: tuple, arrival: tuple, waypoints: list = []):
         """
-        Inicializa una instancia de FlightPlan.
+        Initialize a FlightPlan instance.
 
         Args:
-            departure (tuple): Coordenadas (lat, lon) del punto de partida.
-            arrival (tuple): Coordenadas (lat, lon) del punto de llegada.
-            waypoints (list, opcional): Lista de tuplas de coordenadas para puntos intermedios.
-            api_key (str, opcional): Clave API para datos meteorológicos. Por defecto es None.
+            departure (tuple): Coordinates (lat, lon) of the departure point.
+            arrival (tuple): Coordinates (lat, lon) of the arrival point.
+            waypoints (list, optional): List of coordinate tuples for intermediate points.
         """
         self.departure = self._validate_coordinates(departure)
         self.arrival = self._validate_coordinates(arrival)
         self.waypoints = [self._validate_coordinates(wp) for wp in waypoints]
         self.weather_conditions = {}
-        self.total_distance = 0
-        self.adjusted_speed = 0
+        self.total_distance = 0.0
+        self.adjusted_speed = 0.0
         self.weather_api = WeatherAPI()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
-        Devuelve una representación en cadena del objeto FlightPlan.
-
-        Esta representación incluye los puntos de partida, llegada y los puntos intermedios del plan de vuelo.
+        Return a string representation of the FlightPlan object.
 
         Returns:
-            str: Una cadena que representa el objeto FlightPlan.
+            str: A string representing the FlightPlan object.
         """
         return f"FlightPlan(departure={self.departure}, arrival={self.arrival}, waypoints={self.waypoints})"
 
-    def _validate_coordinates(self, coord):
+    def _validate_coordinates(self, coord: tuple) -> tuple:
         """
-        Valida las coordenadas dadas.
+        Validate the given coordinates.
 
-        Verifica que las coordenadas sean flotantes, tengan 4 decimales y estén dentro de los rangos válidos de latitud y longitud.
+        Checks that the coordinates are floats, have 4 decimal places, and are within valid latitude and longitude ranges.
 
         Args:
-            coord (tuple): Una tupla con la latitud y longitud a validar.
+            coord (tuple): A tuple with latitude and longitude to validate.
 
         Returns:
-            tuple: Las coordenadas validadas.
+            tuple: The validated coordinates.
 
         Raises:
-            ValueError: Si las coordenadas no cumplen con los criterios de validación.
+            ValueError: If the coordinates do not meet validation criteria.
         """
         lat, lon = coord
         if not (isinstance(lat, float) and isinstance(lon, float)):
-            raise ValueError(
-                f"Coordinates must be float type. Given coordinate: {coord}"
-            )
+            raise ValueError(f"Coordinates must be float type. Given coordinate: {coord}")
         if len(str(lat).split(".")[1]) != 4 or len(str(lon).split(".")[1]) != 4:
-            raise ValueError(
-                f"Coordinates must have 4 decimal places. Given coordinate: {coord}"
-            )
+            raise ValueError(f"Coordinates must have 4 decimal places. Given coordinate: {coord}")
         if not (-90 <= lat <= 90):
-            raise ValueError(
-                f"Latitude {lat} is not valid. Must be between -90 and 90."
-            )
+            raise ValueError(f"Latitude {lat} is not valid. Must be between -90 and 90.")
         if not (-180 <= lon <= 180):
-            raise ValueError(
-                f"Longitude {lon} is not valid. Must be between -180 and 180."
-            )
+            raise ValueError(f"Longitude {lon} is not valid. Must be between -180 and 180.")
         return coord
 
     @contextmanager
     def weather_api_context(self):
         """
-        Administrador de contexto para operaciones con la API del clima.
+        Context manager for weather API operations.
 
-        Proporciona un contexto seguro para realizar operaciones con la API del clima,
-        manejando posibles errores y asegurando una correcta gestión de recursos.
+        Provides a safe context for weather API operations, handling possible errors and ensuring proper resource management.
 
         Yields:
-            WeatherAPI or None: La instancia de WeatherAPI si está disponible, None en caso contrario.
+            WeatherAPI or None: The WeatherAPI instance if available, None otherwise.
         """
         if self.weather_api is None:
             yield None
@@ -110,18 +97,18 @@ class FlightPlan:
                 print(f"Error accessing weather API: {e}")
                 yield None
 
-    def get_weather_at_point(self, coordinates):
+    def get_weather_at_point(self, coordinates: tuple) -> Weather:
         """
-        Obtiene las condiciones meteorológicas para las coordenadas dadas.
+        Get weather conditions for the given coordinates.
 
-        Este método obtiene datos meteorológicos de la API si está disponible, de lo contrario
-        genera datos meteorológicos aleatorios. Los resultados se almacenan en caché para eficiencia.
+        This method obtains weather data from the API if available, otherwise
+        generates random weather data. Results are cached for efficiency.
 
         Args:
-            coordinates (tuple): Latitud y longitud del punto.
+            coordinates (tuple): Latitude and longitude of the point.
 
         Returns:
-            Weather: Una instancia de la clase Weather con las condiciones actuales.
+            Weather: An instance of the Weather class with current conditions.
         """
         if coordinates not in self.weather_conditions:
             with self.weather_api_context() as api:
@@ -131,23 +118,19 @@ class FlightPlan:
                         self.weather_conditions[coordinates] = Weather(**weather_data)
                     except Exception as e:
                         print(f"Error obtaining weather data for {coordinates}: {e}")
-                        self.weather_conditions[coordinates] = (
-                            self._generate_random_weather()
-                        )
+                        self.weather_conditions[coordinates] = self._generate_random_weather()
                 else:
-                    self.weather_conditions[coordinates] = (
-                        self._generate_random_weather()
-                    )
+                    self.weather_conditions[coordinates] = self._generate_random_weather()
         return self.weather_conditions[coordinates]
 
-    def _generate_random_weather(self):
+    def _generate_random_weather(self) -> Weather:
         """
-        Genera datos meteorológicos aleatorios.
+        Generate random weather data.
 
-        Este método se utiliza cuando no se puede acceder a la API del clima para obtener datos reales.
+        This method is used when the weather API is not accessible to obtain real data.
 
         Returns:
-            Weather: Una instancia de Weather con datos meteorológicos generados aleatoriamente.
+            Weather: An instance of Weather with randomly generated weather data.
         """
         return Weather(
             wind_speed=random.uniform(0, 100),
@@ -158,17 +141,17 @@ class FlightPlan:
             description=random.choice(["Clear", "Cloudy", "Rainy", "Snowy", "Windy"]),
         )
 
-    def calculate_route(self):
+    def calculate_route(self) -> float:
         """
-        Calcula la distancia total de la ruta y obtiene las condiciones meteorológicas.
+        Calculate the total route distance and get weather conditions.
 
-        Este método calcula la distancia total de la ruta de vuelo, incluyendo
-        los puntos intermedios, y obtiene datos meteorológicos para los puntos de partida y llegada.
+        This method calculates the total distance of the flight route, including
+        intermediate waypoints, and obtains weather data for the departure and arrival points.
 
         Returns:
-            float: La distancia total de la ruta en kilómetros.
+            float: The total route distance in kilometers.
         """
-        total_distance = 0
+        total_distance = 0.0
         route = [self.departure] + self.waypoints + [self.arrival]
 
         for i in range(len(route) - 1):
@@ -189,15 +172,15 @@ class FlightPlan:
 
         return total_distance
 
-    def _get_point_name(self, coordinates):
+    def _get_point_name(self, coordinates: tuple) -> str:
         """
-        Obtiene el nombre de un punto basado en sus coordenadas.
+        Get the name of a point based on its coordinates.
 
         Args:
-            coordinates (tuple): Una tupla con la latitud y longitud del punto.
+            coordinates (tuple): A tuple with the latitude and longitude of the point.
 
         Returns:
-            str: El nombre del punto si está en la lista predefinida, o una representación de las coordenadas.
+            str: The name of the point if it is in the predefined list, or a representation of the coordinates.
         """
         point_names = {
             (40.4168, -3.7038): "Madrid",
@@ -208,18 +191,18 @@ class FlightPlan:
 
     @staticmethod
     @lru_cache(maxsize=None)
-    def haversine_distance(coord1, coord2):
+    def haversine_distance(coord1: tuple, coord2: tuple) -> float:
         """
-        Calcula la distancia del círculo máximo entre dos puntos en la Tierra usando la fórmula del haversine.
+        Calculate the great-circle distance between two points on Earth using the haversine formula.
 
-        Este método está decorado con @lru_cache para mejorar el rendimiento en cálculos repetidos.
+        This method is decorated with @lru_cache to improve performance on repeated calculations.
 
         Args:
-            coord1 (tuple): Coordenadas (latitud, longitud) del primer punto.
-            coord2 (tuple): Coordenadas (latitud, longitud) del segundo punto.
+            coord1 (tuple): Coordinates (latitude, longitude) of the first point.
+            coord2 (tuple): Coordinates (latitude, longitude) of the second point.
 
         Returns:
-            float: La distancia entre los dos puntos en kilómetros.
+            float: The distance between the two points in kilometers.
         """
         R = 6371  # Earth's radius in kilometers
 
@@ -237,14 +220,14 @@ class FlightPlan:
 
         return R * c
 
-    def calculate_flight_direction(self):
+    def calculate_flight_direction(self) -> float:
         """
-        Calcula la dirección inicial del vuelo desde el punto de partida hasta el punto de llegada.
+        Calculate the initial flight direction from the departure point to the arrival point.
 
-        Utiliza la fórmula del rumbo inicial para determinar la dirección del vuelo en grados.
+        Uses the initial bearing formula to determine the flight direction in degrees.
 
         Returns:
-            float: La dirección del vuelo en grados (0-360).
+            float: The flight direction in degrees (0-360).
         """
         lat1, lon1 = math.radians(self.departure[0]), math.radians(self.departure[1])
         lat2, lon2 = math.radians(self.arrival[0]), math.radians(self.arrival[1])
@@ -252,33 +235,29 @@ class FlightPlan:
         dlon = lon2 - lon1
 
         y = math.sin(dlon) * math.cos(lat2)
-        x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(
-            lat2
-        ) * math.cos(dlon)
+        x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
 
         initial_bearing = math.atan2(y, x)
-
         initial_bearing = math.degrees(initial_bearing)
         compass_bearing = (initial_bearing + 360) % 360
 
         return compass_bearing
 
-    def estimate_time(self, cruise_speed):
+    def estimate_time(self, cruise_speed: float) -> float:
         """
-        Estima el tiempo de vuelo considerando las condiciones meteorológicas.
+        Estimate the flight time considering weather conditions.
 
-        Este método calcula el tiempo de vuelo estimado basado en la velocidad de crucero dada,
-        ajustando por las condiciones de viento e incluyendo tiempo para las fases de
-        taxi, ascenso y descenso.
+        This method calculates the estimated flight time based on the given cruise speed,
+        adjusting for wind conditions and including time for taxi, climb, and descent phases.
 
         Args:
-            cruise_speed (float): La velocidad de crucero de la aeronave en km/h.
+            cruise_speed (float): The aircraft's cruise speed in km/h.
 
         Returns:
-            float: Tiempo total de vuelo estimado en horas.
+            float: Estimated total flight time in hours.
 
         Raises:
-            ValueError: Si la velocidad de crucero proporcionada no es positiva.
+            ValueError: If the provided cruise speed is not positive.
         """
         if cruise_speed <= 0:
             raise ValueError("Speed must be greater than 0.")
@@ -293,9 +272,7 @@ class FlightPlan:
         climb_time = 15 / 60  # 15 minutes in hours
         descent_time = 15 / 60  # 15 minutes in hours
 
-        climb_descent_distance = (climb_time + descent_time) * (
-            adjusted_cruise_speed / 2
-        )
+        climb_descent_distance = (climb_time + descent_time) * (adjusted_cruise_speed / 2)
         cruise_distance = max(0, self.total_distance - climb_descent_distance)
         cruise_time = cruise_distance / adjusted_cruise_speed
 
@@ -304,33 +281,3 @@ class FlightPlan:
         self.adjusted_speed = self.total_distance / total_time  # Actual average speed
 
         return total_time
-
-
-if __name__ == "__main__":
-    try:
-        api_key = os.getenv("API_KEY")
-        weather_api = WeatherAPI()
-
-        if weather_api.check_api_status():
-            print("\nWeather API is working correctly")
-        else:
-            print("\nWeather API is not working correctly")
-            api_key = None  # This will force the use of random weather data
-
-        madrid = (40.4168, -3.7038)
-        valladolid = (41.6528, -4.7245)
-        segovia = (40.9429, -4.1088)
-
-        flight_plan = FlightPlan(madrid, valladolid, [segovia])
-
-        total_distance = flight_plan.calculate_route()
-        estimated_time = flight_plan.estimate_time(800)
-
-        print(f"\nTotal distance: {total_distance:.2f} km")
-        print(f"Average speed: {flight_plan.adjusted_speed:.2f} km/h")
-        print(
-            f"Estimated flight time: {estimated_time:.2f} hours ({estimated_time*60:.0f} minutes)\n"
-        )
-
-    except ValueError as e:
-        print(f"Error: {e}")
