@@ -9,7 +9,7 @@
 
 A professional Python project for planning flight routes with real-time weather considerations, featuring dark mode support, enhanced UI, and improved aircraft simulation.
 
-![Flight Planner Dashboard](https://i.pinimg.com/originals/d7/e7/81/d7e781b32269a8a82b500c1a9dc97733.gif)
+![Flight Planner Sky](assets/sky.gif)
 
 ---
 
@@ -79,18 +79,18 @@ Once launched:
 6. **Export/Print** - Download or print your flight plan with dark mode support
 7. **View History** - Click the history button (📜) to view previous routes with improved visual design
 
-## <span style="font-size:1.2em; font-weight:bold;">📸 Execution Screenshots</span>
+## 📸 Execution Screenshots
 
 <details>
-<summary style="">Click to expand</summary>
+<summary>Click to expand</summary>
 <br>
-<div align="center">
-  <img src="screenshots/1.png" alt="Execution Screenshot 1" width="800" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
+<p align="center">
+  <img src="assets/1.png" alt="Execution Screenshot 1" width="800" />
   <br>
-  <img src="screenshots/2.png" alt="Execution Screenshot 2" width="800" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
+  <img src="assets/2.png" alt="Execution Screenshot 2" width="800" />
   <br>
-  <img src="screenshots/3.png" alt="Execution Screenshot 3" width="800" style="box-shadow:0 4px 16px #0002; border-radius:8px;"/>
-</div>
+  <img src="assets/3.png" alt="Execution Screenshot 3" width="800" />
+</p>
 </details>
 
 ## 🧪 Testing
