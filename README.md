@@ -6,7 +6,7 @@
 [![Docs](https://img.shields.io/badge/docs-Sphinx-informational)](docs/_build/index.html)
 
 <p align="center">
-   <img src="assets/sky.gif" alt="Flight Planner Sky" width="560" />
+   <img src="assets/sky.gif" alt="Flight Planner Sky" width="800" />
 </p>
 
 

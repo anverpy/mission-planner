@@ -8,16 +8,12 @@ The beta version included the following features:
 - Flight route calculation between Spanish cities
 - OpenWeatherMap API integration
 - Simulated weather when API is unavailable
-- Interactive map with city markers
 - Flight time estimation with weather considerations
-- CSV export of flight plans
-- Printable flight reports
+- On terminal flight reports
 - Route history tracking
-- Basic aircraft selection (Cessna 172, Cirrus SR22, Piper PA-28, Diamond DA40, Beechcraft Bonanza)
 - Adjustable flight parameters
 - Weather information display
 - Flight recommendations
-- Visual altitude profile
 
 ## [1.0.0] - 2025 May 11
 
