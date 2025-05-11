@@ -9,8 +9,7 @@
 
 A professional Python project for planning flight routes with real-time weather considerations, featuring dark mode support, enhanced UI, and improved aircraft simulation.
 
-<iframe src="https://gifer.com/embed/Lx0q" width=480 height=270.000 frameBorder="0" allowFullScreen></iframe><p><a href="https://gifer.com">
-</a></p>
+![Flight Planner Dashboard](https://i.gifer.com/Lx0q.gif)
 
 ---
 
@@ -80,17 +79,17 @@ Once launched:
 6. **Export/Print** - Download or print your flight plan with dark mode support
 7. **View History** - Click the history button (📜) to view previous routes with improved visual design
 
-## <span style="font-size:1.5em; font-weight:bold;">📸 Execution Screenshots</span>
+## <span style="font-size:1.2em; font-weight:bold;">📸 Execution Screenshots</span>
 
 <details>
 <summary style="">Click to expand</summary>
 <br>
 <div align="center">
-  <img src="screenshots/1.png" alt="Execution Screenshot 1" width="600" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
+  <img src="screenshots/1.png" alt="Execution Screenshot 1" width="1800" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
   <br>
-  <img src="screenshots/2.png" alt="Execution Screenshot 2" width="600" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
+  <img src="screenshots/2.png" alt="Execution Screenshot 2" width="1800" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
   <br>
-  <img src="screenshots/3.png" alt="Execution Screenshot 3" width="600" style="box-shadow:0 4px 16px #0002; border-radius:8px;"/>
+  <img src="screenshots/3.png" alt="Execution Screenshot 3" width="1800" style="box-shadow:0 4px 16px #0002; border-radius:8px;"/>
 </div>
 </details>
 
