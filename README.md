@@ -9,7 +9,7 @@
 
 A professional Python project for planning flight routes with real-time weather considerations, featuring dark mode support, enhanced UI, and improved aircraft simulation.
 
-![Flight Planner Dashboard](https://i.gifer.com/Lx0q.gif)
+![Flight Planner Dashboard](https://i.pinimg.com/originals/d7/e7/81/d7e781b32269a8a82b500c1a9dc97733.gif)
 
 ---
 
@@ -85,11 +85,11 @@ Once launched:
 <summary style="">Click to expand</summary>
 <br>
 <div align="center">
-  <img src="screenshots/1.png" alt="Execution Screenshot 1" width="1800" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
+  <img src="screenshots/1.png" alt="Execution Screenshot 1" width="800" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
   <br>
-  <img src="screenshots/2.png" alt="Execution Screenshot 2" width="1800" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
+  <img src="screenshots/2.png" alt="Execution Screenshot 2" width="800" style="margin-bottom:20px; box-shadow:0 4px 16px #0002; border-radius:8px;"/>
   <br>
-  <img src="screenshots/3.png" alt="Execution Screenshot 3" width="1800" style="box-shadow:0 4px 16px #0002; border-radius:8px;"/>
+  <img src="screenshots/3.png" alt="Execution Screenshot 3" width="800" style="box-shadow:0 4px 16px #0002; border-radius:8px;"/>
 </div>
 </details>
 
