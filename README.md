@@ -9,7 +9,7 @@
 
 A professional Python project for planning flight routes with real-time weather considerations, featuring dark mode support, enhanced UI, and improved aircraft simulation.
 
-![Flight Planner Dashboard](https://i.gifer.com/Lx0q.gif) 
+![Flight Planner Dashboard](https://i.gifer.com/Lx0q.gif)
 
 ---
 
